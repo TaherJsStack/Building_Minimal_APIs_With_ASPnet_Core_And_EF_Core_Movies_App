@@ -1,0 +1,11 @@
+﻿1. Add Migration
+	dotnet ef migrations add Genre_Migrations
+
+2. Update Database
+	dotnet ef database update
+
+3. Remove Last Migration (if not applied to DB)
+	dotnet ef migrations remove
+
+4. List Migrations
+	dotnet ef migrations list
