@@ -1,5 +1,5 @@
 using Building_Minimal_APIs_With_ASPnet_Core_And_EF_Core_Movies_App.Entities;
-using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Cors;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -30,8 +30,11 @@ var app = builder.Build();
 
 // Middleware Zone - START
 
-//app.MapGet("/", () => ConfigName);
-app.MapGet("/genres", () =>
+app.UseCors();
+
+app.MapGet("/", () => "ConfigName");
+
+app.MapGet("/genres", [EnableCors(policyName:"free")] () =>
 {
     var GenresList = new List<Genre>
     {
@@ -53,7 +56,6 @@ app.MapGet("/genres", () =>
     };
 
     return GenresList;
-
 });
 
 
