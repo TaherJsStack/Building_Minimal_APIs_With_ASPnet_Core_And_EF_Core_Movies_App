@@ -1,11 +1,19 @@
+using Building_Minimal_APIs_With_ASPnet_Core_And_EF_Core_Movies_App;
 using Building_Minimal_APIs_With_ASPnet_Core_And_EF_Core_Movies_App.Entities;
 using Microsoft.AspNetCore.Cors;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Services Zone - START
 
 //string ConfigName = builder.Configuration.GetValue<string>("ConfigName");
+
+builder.Services.AddDbContext<ApplicationDBContext>(options =>
+{
+    options.UseSqlServer("name=DBConnection");
+});
+
 builder.Services.AddCors(options =>
 {
     options.AddDefaultPolicy(configuration =>
