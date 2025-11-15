@@ -9,6 +9,17 @@ namespace Building_Minimal_APIs_With_ASPnet_Core_And_EF_Core_Movies_App
         {
         }
 
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
+
+            modelBuilder
+                .Entity<Genre>()
+                .Property(p => p.Name )
+                .HasMaxLength(50);
+        
+        }
+
         public DbSet<Genre> Genres { get; set; } 
     }
 }
