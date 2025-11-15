@@ -23,8 +23,11 @@ builder.Services.AddCors(options =>
 
 });
 
-
 builder.Services.AddOutputCache();
+
+builder.Services.AddEndpointsApiExplorer();
+
+builder.Services.AddSwaggerGen();
 
 // Services Zone - END
 
@@ -32,6 +35,11 @@ var app = builder.Build();
 
 // Middleware Zone - START
 
+app.UseSwagger();
+app.UseSwaggerUI(c =>
+{
+
+});
 app.UseCors();
 
 app.UseOutputCache();
