@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace Building_Minimal_APIs_With_ASPnet_Core_And_EF_Core_Movies_App.Entities
+namespace Building_MinimalAPIsMoviesApp.Entities
 {
     public class Genre
     {   

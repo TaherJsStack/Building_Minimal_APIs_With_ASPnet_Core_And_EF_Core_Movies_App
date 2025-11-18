@@ -12,19 +12,19 @@ EXPOSE 8081
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
-COPY ["Building_Minimal_APIs_With_ASPnet_Core_And_EF_Core_Movies_App.csproj", "."]
-RUN dotnet restore "./Building_Minimal_APIs_With_ASPnet_Core_And_EF_Core_Movies_App.csproj"
+COPY ["Building_MinimalAPIsMoviesApp.csproj", "."]
+RUN dotnet restore "./Building_MinimalAPIsMoviesApp.csproj"
 COPY . .
 WORKDIR "/src/."
-RUN dotnet build "./Building_Minimal_APIs_With_ASPnet_Core_And_EF_Core_Movies_App.csproj" -c $BUILD_CONFIGURATION -o /app/build
+RUN dotnet build "./Building_MinimalAPIsMoviesApp.csproj" -c $BUILD_CONFIGURATION -o /app/build
 
 # This stage is used to publish the service project to be copied to the final stage
 FROM build AS publish
 ARG BUILD_CONFIGURATION=Release
-RUN dotnet publish "./Building_Minimal_APIs_With_ASPnet_Core_And_EF_Core_Movies_App.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
+RUN dotnet publish "./Building_MinimalAPIsMoviesApp.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
 
 # This stage is used in production or when running from VS in regular mode (Default when not using the Debug configuration)
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
-ENTRYPOINT ["dotnet", "Building_Minimal_APIs_With_ASPnet_Core_And_EF_Core_Movies_App.dll"]
+ENTRYPOINT ["dotnet", "Building_MinimalAPIsMoviesApp.dll"]

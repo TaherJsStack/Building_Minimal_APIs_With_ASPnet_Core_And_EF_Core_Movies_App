@@ -2,7 +2,7 @@
 
 #nullable disable
 
-namespace Building_Minimal_APIs_With_ASPnet_Core_And_EF_Core_Movies_App.Migrations
+namespace Building_MinimalAPIsMoviesApp.Migrations
 {
     /// <inheritdoc />
     public partial class Genre_Migrations_StringLength : Migration
