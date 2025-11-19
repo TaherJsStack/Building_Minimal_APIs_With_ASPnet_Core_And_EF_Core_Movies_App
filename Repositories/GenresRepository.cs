@@ -20,7 +20,8 @@ namespace Building_MinimalAPIsMoviesApp.Repositories
         }
         public async Task<List<Genre>> GetAll()
         {
-            return await _context.Genres.ToListAsync();
+            return await _context.Genres.OrderBy(genre => genre.Name).ToListAsync();
+            //return await _context.Genres.OrderByDescending(genre => genre.Name).ToListAsync();
         }
 
 
