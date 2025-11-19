@@ -41,5 +41,10 @@ namespace Building_MinimalAPIsMoviesApp.Repositories
             _context.Update(genre);
             await _context.SaveChangesAsync();
         }
+
+        public async Task Delete(int id)
+        {
+            await _context.Genres.Where<Genre>(genre => genre.Id == id).ExecuteDeleteAsync();
+        }
     }
 }
