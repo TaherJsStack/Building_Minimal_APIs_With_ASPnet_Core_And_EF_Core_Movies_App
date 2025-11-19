@@ -1,4 +1,5 @@
 ﻿using Building_MinimalAPIsMoviesApp.Entities;
+using Microsoft.EntityFrameworkCore;
 
 namespace Building_MinimalAPIsMoviesApp.Repositories
 {
@@ -17,5 +18,16 @@ namespace Building_MinimalAPIsMoviesApp.Repositories
             await _context.SaveChangesAsync();
             return genre.Id;
         }
+        public async Task<List<Genre>> GetAll()
+        {
+            return await _context.Genres.ToListAsync();
+        }
+
+
+        public async Task<Genre?> GetById(int id)
+        {
+            return await _context.Genres.FirstOrDefaultAsync(genre => genre.Id == id);
+        }
+
     }
 }
