@@ -15,7 +15,7 @@ namespace Building_MinimalAPIsMoviesApp
 
             modelBuilder
                 .Entity<Genre>()
-                .Property(p => p.Name )
+                .Property(p => p.Name)
                 .HasMaxLength(50);
         
         }

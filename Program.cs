@@ -1,5 +1,6 @@
 using Building_MinimalAPIsMoviesApp;
 using Building_MinimalAPIsMoviesApp.Entities;
+using Building_MinimalAPIsMoviesApp.Repositories;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.EntityFrameworkCore;
 
@@ -36,6 +37,8 @@ builder.Services.AddOutputCache();
 builder.Services.AddEndpointsApiExplorer();
 
 builder.Services.AddSwaggerGen();
+
+builder.Services.AddScoped<IGenresRepositories, GenresRepository>();
 
 // Services Zone - END
 
@@ -77,7 +80,11 @@ app.MapGet("/genres", [EnableCors(policyName:"free")] () =>
     return GenresList;
 }).CacheOutput(c => c.Expire(TimeSpan.FromSeconds(10)));
 
-
+app.MapPost("/Genres", async (Genre genre, IGenresRepositories repository) =>
+{
+    var id = await repository.Create(genre);
+    return Results.Created($"/geners/{id}", genre);
+});
 
 // Middleware Zone - END
 
