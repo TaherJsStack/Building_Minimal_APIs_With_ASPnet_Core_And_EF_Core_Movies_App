@@ -2,6 +2,7 @@ using Building_MinimalAPIsMoviesApp;
 using Building_MinimalAPIsMoviesApp.Entities;
 using Building_MinimalAPIsMoviesApp.Repositories;
 using Microsoft.AspNetCore.Cors;
+using Microsoft.AspNetCore.OutputCaching;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -60,11 +61,11 @@ app.MapGet("/", () => "ConfigName");
 app.MapGet("/genres", [EnableCors(policyName:"free")] async (IGenresRepositories repository) =>
 {
     return await repository.GetAll();
-}).CacheOutput(c => c.Expire(TimeSpan.FromSeconds(10)));
+}).CacheOutput(c => c.Expire(TimeSpan.FromSeconds(60)).Tag("genres-get"));
 
-app.MapGet("/genre/{id:int}", [EnableCors(policyName: "free")] async (int id, IGenresRepositories repository) =>
+app.MapGet("/geners/{id:int}", [EnableCors(policyName: "free")] async (int id, IGenresRepositories repository) =>
 {
-    var genre = await repository.GetById(id);
+    var genre = await repository.GetById(id); 
     
     if (genre == null)
     {
@@ -74,9 +75,10 @@ app.MapGet("/genre/{id:int}", [EnableCors(policyName: "free")] async (int id, IG
 }).CacheOutput(c => c.Expire(TimeSpan.FromSeconds(10)));
 
 
-app.MapPost("/Genres", async (Genre genre, IGenresRepositories repository) =>
+app.MapPost("/Genres", async (Genre genre, IGenresRepositories repository, IOutputCacheStore outputCacheStore) =>
 {
     var id = await repository.Create(genre);
+    await outputCacheStore.EvictByTagAsync("genres-get", default);
     return Results.Created($"/geners/{id}", genre);
 });
 
