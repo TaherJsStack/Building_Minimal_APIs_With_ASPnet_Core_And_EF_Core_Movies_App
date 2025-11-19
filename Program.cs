@@ -75,12 +75,28 @@ app.MapGet("/geners/{id:int}", [EnableCors(policyName: "free")] async (int id, I
 }).CacheOutput(c => c.Expire(TimeSpan.FromSeconds(10)));
 
 
-app.MapPost("/Genres", async (Genre genre, IGenresRepositories repository, IOutputCacheStore outputCacheStore) =>
+app.MapPost("/genres", async (Genre genre, IGenresRepositories repository, IOutputCacheStore outputCacheStore) =>
 {
     var id = await repository.Create(genre);
     await outputCacheStore.EvictByTagAsync("genres-get", default);
     return Results.Created($"/geners/{id}", genre);
 });
+
+app.MapPut("/genres/{id}", async (int id, Genre genre, IGenresRepositories repository, IOutputCacheStore outputCacheStore) =>
+{
+    var exists = await repository.Exists(id);
+
+    if (!exists)
+    {
+        return Results.NotFound();
+    }
+    await repository.Update(genre);
+    await outputCacheStore.EvictByTagAsync("genres-get", default);
+    //return Results.Ok(genre);
+    return Results.NoContent();
+
+});
+
 
 // Middleware Zone - END
 
