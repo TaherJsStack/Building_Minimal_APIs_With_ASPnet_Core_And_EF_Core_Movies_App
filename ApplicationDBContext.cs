@@ -24,13 +24,24 @@ namespace Building_MinimalAPIsMoviesApp
                 .HasMaxLength(150);
 
             modelBuilder
-            .Entity<Actor>()
-            .Property(p => p.Picture)
-            .IsUnicode(false);
+                .Entity<Actor>()
+                .Property(p => p.Picture)
+                .IsUnicode(false);
+
+            modelBuilder
+                .Entity<Movie>()
+                .Property(m => m.Title)
+                .HasMaxLength(250);
+
+            modelBuilder
+            .Entity<Movie>()
+            .Property(m => m.Poster)
+            .IsUnicode();
 
         }
 
         public DbSet<Genre> Genres { get; set; } 
         public DbSet<Actor> Actors { get; set; }
+        public DbSet<Movie> Movies { get; set; }
     }
 }

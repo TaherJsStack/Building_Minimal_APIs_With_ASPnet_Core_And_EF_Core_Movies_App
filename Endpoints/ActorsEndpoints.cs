@@ -55,8 +55,7 @@ namespace Building_MinimalAPIsMoviesApp.Endpoints
             var actorDTO = mapper.Map<List<ActorDTO>>(actors);
             return TypedResults.Ok(actorDTO);
         }
-
-
+        
         static async Task<Created<ActorDTO>> Create(
             [FromForm] CreateActorDTO createActorDTO,
             IActorsRepository repository,
@@ -79,7 +78,6 @@ namespace Building_MinimalAPIsMoviesApp.Endpoints
             return TypedResults.Created($"/actors/{id}", actorDTO);
 
         }
-
 
         static async Task<Results<NoContent, NotFound>> Update(
             int id,
