@@ -9,6 +9,7 @@ namespace Building_MinimalAPIsMoviesApp.Repositories
         Task<bool> Exist(int id);
         Task<List<Actor>> GetAll();
         Task<Actor?> GetById(int id);
+        Task<List<Actor>> GetByName(string name);
         Task Update(Actor actor);
     }
 }
