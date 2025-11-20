@@ -29,7 +29,7 @@ namespace Building_MinimalAPIsMoviesApp.Repositories
             return actor.Id;
         }
 
-        public async Task<bool> Exist(int id) 
+        public async Task<bool> Exist(int id)
         { 
             return await _context.Actors.AnyAsync(actor => actor.Id == id);
         }
