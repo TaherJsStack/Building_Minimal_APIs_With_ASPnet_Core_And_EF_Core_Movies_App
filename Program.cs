@@ -61,6 +61,7 @@ app.UseOutputCache();
 app.MapGet("/", () => "ConfigName");
 
 app.MapGroup("/genres").MapGenres();
+app.MapGroup("/actors").MapActors();
 
 // Middleware Zone - END
 
