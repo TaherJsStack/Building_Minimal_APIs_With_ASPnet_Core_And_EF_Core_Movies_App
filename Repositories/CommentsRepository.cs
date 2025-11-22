@@ -19,7 +19,11 @@ namespace Building_MinimalAPIsMoviesApp.Repositories
         {
             var queryable = _context.Comments.AsQueryable();
             await _httpContextAccessor.HttpContext!.InsertpaginationparametersInResponseHeader(queryable);
-            return await queryable.Where(comment => comment.MovieId == moviId).OrderBy(comment => comment.Id).Pagination(paginationDTO).ToListAsync();
+            return await queryable
+                            .Where(comment => comment.MovieId == moviId)
+                            .OrderBy(comment => comment.Id)
+                            .Pagination(paginationDTO)
+                            .ToListAsync();
         }
 
         public async Task<Comment?> GetById(int id)
