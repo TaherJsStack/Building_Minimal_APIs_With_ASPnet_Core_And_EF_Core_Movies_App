@@ -8,6 +8,7 @@ namespace Building_MinimalAPIsMoviesApp.Repositories
         Task<int> Create(Actor actor);
         Task Delete(int id);
         Task<bool> Exist(int id);
+        Task<List<int>> Exist(List<int> ids);
         Task<List<Actor>> GetAll(PaginationDTO paginationDTO);
         Task<Actor?> GetById(int id);
         Task<List<Actor>> GetByName(string name);
