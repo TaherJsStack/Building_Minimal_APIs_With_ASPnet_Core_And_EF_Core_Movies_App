@@ -30,6 +30,10 @@ namespace Building_MinimalAPIsMoviesApp.Repositories
             return await _context
                             .Movies
                             .Include(movie => movie.Comments)
+                            .Include(movie => movie.GenresMovies)
+                                .ThenInclude(gm => gm.Genre)
+                            .Include(movie => movie.ActorsMovies.OrderBy(a => a.Order) )
+                                .ThenInclude(am=> am.Actor)
                             .AsNoTracking()
                             .FirstOrDefaultAsync(movie => movie.Id == id);
         }
