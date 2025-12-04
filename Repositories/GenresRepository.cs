@@ -36,6 +36,15 @@ namespace Building_MinimalAPIsMoviesApp.Repositories
             return await _context.Genres.AnyAsync(genre => genre.Id == id);
         }
 
+        public async Task<List<int>> Exists(List<int> ids) 
+        {
+            return await _context
+                .Genres
+                .Where(genre => ids.Contains(genre.Id))
+                .Select(gerne => gerne.Id)
+                .ToListAsync();
+        }
+
         public async Task Update(Genre genre)
         {
             _context.Update(genre);
