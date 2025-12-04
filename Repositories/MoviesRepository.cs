@@ -65,21 +65,35 @@ namespace Building_MinimalAPIsMoviesApp.Repositories
             await _context.Movies.Where(movie => movie.Id == id).ExecuteDeleteAsync();
         }
 
-
         public async Task Assign(int id, List<int> genresIds) 
         { 
             var movie = await _context.Movies.Include(m => m.GenresMovies).FirstOrDefaultAsync(movie => movie.Id == id);
             if (movie == null) 
             {
-                throw new ArgumentNullException($" there's no movie with id: { id }");
+                throw new ArgumentNullException($"there's no movie with id: { id }");
             }
-
             var genresMovies = genresIds.Select(genreId => new GenreMovie { GenreId = genreId });
-        
             movie.GenresMovies = _mapper.Map(genresMovies, movie.GenresMovies);
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task Assign(int id, List<ActorMovie> actors)
+        {
+            for (int i = 1; i < actors.Count; i++)
+            {
+                actors[i - 1].Order = i;
+            }
+            var movie = await _context.Movies.Include(movie => movie.ActorsMovies)
+                                             .FirstOrDefaultAsync(movie => movie.Id == id);
+
+            if (movie is null) 
+            {
+                throw new ArgumentNullException($"there's no movie with id: { id }");
+            }
+        
+            movie.ActorsMovies = _mapper.Map(actors, movie.ActorsMovies);
 
             await _context.SaveChangesAsync();
-
         }
 
     }
