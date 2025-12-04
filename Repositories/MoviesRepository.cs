@@ -1,4 +1,5 @@
-﻿using Building_MinimalAPIsMoviesApp.DTOs;
+﻿using AutoMapper;
+using Building_MinimalAPIsMoviesApp.DTOs;
 using Building_MinimalAPIsMoviesApp.Entities;
 using Microsoft.EntityFrameworkCore;
 
@@ -8,11 +9,13 @@ namespace Building_MinimalAPIsMoviesApp.Repositories
     {
         private readonly ApplicationDBContext _context;
         private readonly IHttpContextAccessor _httpContextAccessor;
+        private readonly IMapper _mapper;
 
-        public MoviesRepository(ApplicationDBContext context, IHttpContextAccessor httpContextAccessor)
+        public MoviesRepository(ApplicationDBContext context, IHttpContextAccessor httpContextAccessor, IMapper mapper)
         {
             _context = context;
             _httpContextAccessor = httpContextAccessor;
+            _mapper = mapper;
         }
 
         public async Task<List<Movie>> GetAll(PaginationDTO paginationDTO)
@@ -60,6 +63,23 @@ namespace Building_MinimalAPIsMoviesApp.Repositories
         public async Task Delete(int id)
         {
             await _context.Movies.Where(movie => movie.Id == id).ExecuteDeleteAsync();
+        }
+
+
+        public async Task Assign(int id, List<int> genresIds) 
+        { 
+            var movie = await _context.Movies.Include(m => m.GenresMovies).FirstOrDefaultAsync(movie => movie.Id == id);
+            if (movie == null) 
+            {
+                throw new ArgumentNullException($" there's no movie with id: { id }");
+            }
+
+            var genresMovies = genresIds.Select(genreId => new GenreMovie { GenreId = genreId });
+        
+            movie.GenresMovies = _mapper.Map(genresMovies, movie.GenresMovies);
+
+            await _context.SaveChangesAsync();
+
         }
 
     }
