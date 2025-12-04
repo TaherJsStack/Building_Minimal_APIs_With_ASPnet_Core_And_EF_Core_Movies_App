@@ -40,6 +40,10 @@ namespace Building_MinimalAPIsMoviesApp
                 .Entity<GenreMovie>()
                 .HasKey(gm => new { gm.MovieId, gm.GenreId});
 
+            modelBuilder
+                .Entity<ActorMovie>()
+                .HasKey(am => new { am.ActorId, am.MovieId });
+
         }
 
         public DbSet<Genre> Genres { get; set; } 
@@ -47,5 +51,6 @@ namespace Building_MinimalAPIsMoviesApp
         public DbSet<Movie> Movies { get; set; }
         public DbSet<Comment> Comments { get; set; }
         public DbSet<GenreMovie> GenresMovies { get; set; }
+        public DbSet<ActorMovie> ActorsMovies { get; set; }
     }
 }
