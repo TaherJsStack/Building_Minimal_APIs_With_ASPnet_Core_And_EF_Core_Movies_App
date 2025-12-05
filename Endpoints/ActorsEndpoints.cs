@@ -74,7 +74,6 @@ namespace Building_MinimalAPIsMoviesApp.Endpoints
                 return TypedResults.ValidationProblem(validationResult.ToDictionary());
             }
 
-
             var actor = mapper.Map<Actor>(createActorDTO);
 
             if (createActorDTO.Picture is not null)
