@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Building_MinimalAPIsMoviesApp.DTOs;
 using Building_MinimalAPIsMoviesApp.Entities;
+using Building_MinimalAPIsMoviesApp.Filters;
 using Building_MinimalAPIsMoviesApp.Repositories;
 using Building_MinimalAPIsMoviesApp.Services;
 using FluentValidation;
@@ -20,8 +21,8 @@ namespace Building_MinimalAPIsMoviesApp.Endpoints
             group.MapGet("/", GetActors).CacheOutput(c => c.Expire(TimeSpan.FromSeconds(60)).Tag("actors-get"));
             group.MapGet("/{id:int}", GetById);
             group.MapGet("/GetByName/{name}", GetByName);
-            group.MapPost("/", Create).DisableAntiforgery();
-            group.MapPut("/{id:int}", Update).DisableAntiforgery();
+            group.MapPost("/", Create).DisableAntiforgery().AddEndpointFilter<ValidationFilter<ActorDTO>>();
+            group.MapPut("/{id:int}", Update).DisableAntiforgery().AddEndpointFilter<ValidationFilter<ActorDTO>>();
             group.MapDelete("/{id:int}", Delete);
 
             return group;
