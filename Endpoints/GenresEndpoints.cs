@@ -17,9 +17,9 @@ namespace Building_MinimalAPIsMoviesApp.Endpoints
 
             group.MapGet("/{id:int}", GetById).AddEndpointFilter<TestFilter>();
 
-            group.MapPost("/", Create);
+            group.MapPost("/", Create).AddEndpointFilter<GenresValidationFilter>();
 
-            group.MapPut("/{id:int}", Update);
+            group.MapPut("/{id:int}", Update).AddEndpointFilter<GenresValidationFilter>();
 
             group.MapDelete("/{id:int}", Delete);
 
@@ -86,9 +86,9 @@ namespace Building_MinimalAPIsMoviesApp.Endpoints
         }
 
         static async Task<Results<NotFound, NoContent, ValidationProblem>> Update(
-            int id, 
-            CreateGenreDTO createGenreDTO, 
-            IGenresRepository repository, 
+            int id,
+            CreateGenreDTO createGenreDTO,
+            IGenresRepository repository,
             IOutputCacheStore outputCacheStore,
             IMapper mapper,
             IValidator<CreateGenreDTO> validator
@@ -120,8 +120,8 @@ namespace Building_MinimalAPIsMoviesApp.Endpoints
         }
 
         static async Task<Results<NotFound, NoContent>> Delete(
-            int id, 
-            IGenresRepository repository, 
+            int id,
+            IGenresRepository repository,
             IOutputCacheStore outputCacheStore)
         {
             var exists = await repository.Exists(id);
