@@ -8,12 +8,12 @@ namespace Building_MinimalAPIsMoviesApp.Validations
     {
         public CreateGenreDTOValidator(IGenresRepository genresRepository, IHttpContextAccessor httpContextAccessor)
         {
-            var routeValueId = httpContextAccessor.HttpContext.Request.RouteValues["id"];
+            var routeValueId = httpContextAccessor?.HttpContext?.Request.RouteValues["id"];
             var id = 0;
 
             if (routeValueId is string routeValueIdString)
             {
-                int.TryParse(routeValueIdString, out id );
+                int.TryParse(routeValueIdString, out id);
             }
 
             RuleFor(p => p.Name)
@@ -27,8 +27,7 @@ namespace Building_MinimalAPIsMoviesApp.Validations
                 {
                     var exists = await genresRepository.Exists(id, name);
                     return !exists;
-                }).WithMessage(g => $"a genre with the {g.Name} already exists.")
-                ;
+                }).WithMessage(g => $"a genre with the {g.Name} already exists.");
         }
 
         private bool FirstLitterIsUppercase(string value)
