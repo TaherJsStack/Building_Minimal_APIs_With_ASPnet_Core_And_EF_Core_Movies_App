@@ -28,7 +28,11 @@ namespace Building_MinimalAPIsMoviesApp.Endpoints
             return group;
         }
 
-        static async Task<Ok<List<MovieDTO>>> GetMovies(IMoviesRepository repository, IMapper mapper, int Page = 1, int recordsPerPage = 10)
+        static async Task<Ok<List<MovieDTO>>> GetMovies(
+            IMoviesRepository repository,
+            IMapper mapper,
+            int Page = 1,
+            int recordsPerPage = 10)
         {
             var pagination = new PaginationDTO
             {
@@ -40,7 +44,10 @@ namespace Building_MinimalAPIsMoviesApp.Endpoints
             return TypedResults.Ok(movieDTO);
         }
 
-        static async Task<Results<Ok<MovieDTO>, NotFound>> GetById(int id, IMoviesRepository repository, IMapper mapper)
+        static async Task<Results<Ok<MovieDTO>, NotFound>> GetById(
+            int id,
+            IMoviesRepository repository,
+            IMapper mapper)
         {
             var movie = await repository.GetById(id);
             if (movie == null)
@@ -51,7 +58,10 @@ namespace Building_MinimalAPIsMoviesApp.Endpoints
             return TypedResults.Ok(movieDTO);
         }
 
-        static async Task<Results<Ok<List<MovieDTO>>, NotFound>> GetByName(string name, IMoviesRepository repository, IMapper mapper)
+        static async Task<Results<Ok<List<MovieDTO>>, NotFound>> GetByName(
+            string name,
+            IMoviesRepository repository,
+            IMapper mapper)
         {
             var movies = await repository.GetByName(name);
             var movieDTO = mapper.Map<List<MovieDTO>>(movies);
