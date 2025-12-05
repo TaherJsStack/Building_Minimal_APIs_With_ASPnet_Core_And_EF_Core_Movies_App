@@ -18,26 +18,19 @@ namespace Building_MinimalAPIsMoviesApp.Validations
 
             RuleFor(p => p.Name)
                 .NotEmpty()
-                .WithMessage("Custom Not Empty Message Error For {PropertyName}")
+                    .WithMessage(ValidationUtilities.NotEmptyMessage)
                 .MaximumLength(150)
-                .WithMessage("Custom Maximum Length Message Error For {PropertyName}")
-                .Must(FirstLitterIsUppercase)
-                .WithMessage("First Litter Is Uppercase Error Message")
+                    .WithMessage(ValidationUtilities.MaximumLengthMessage)
+                .Must(ValidationUtilities.FirstLitterIsUppercase)
+                    .WithMessage(ValidationUtilities.FirstLitter)
                 .MustAsync(async (name, _) =>
                 {
                     var exists = await genresRepository.Exists(id, name);
                     return !exists;
-                }).WithMessage(g => $"a genre with the {g.Name} already exists.");
+                })
+                  .WithMessage(g => ValidationUtilities.ExistsMessage(g.Name));
         }
 
-        private bool FirstLitterIsUppercase(string value)
-        {
-            if (string.IsNullOrWhiteSpace(value))
-            {
-                return true;
-            }
-            var firestLitter = value[0].ToString();
-            return firestLitter == firestLitter.ToUpper();
-        }
+
     }
 }
