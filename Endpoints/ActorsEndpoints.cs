@@ -3,6 +3,7 @@ using Building_MinimalAPIsMoviesApp.DTOs;
 using Building_MinimalAPIsMoviesApp.Entities;
 using Building_MinimalAPIsMoviesApp.Repositories;
 using Building_MinimalAPIsMoviesApp.Services;
+using FluentValidation;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.OutputCaching;
@@ -26,7 +27,7 @@ namespace Building_MinimalAPIsMoviesApp.Endpoints
             return group;
         }
 
-        static async Task<Ok<List<ActorDTO>>> GetActors(IActorsRepository repository, IMapper mapper, int Page = 1, int recordsPerPage = 10 )
+        static async Task<Ok<List<ActorDTO>>> GetActors(IActorsRepository repository, IMapper mapper, int Page = 1, int recordsPerPage = 10)
         {
             var pagination = new PaginationDTO
             {
@@ -55,20 +56,30 @@ namespace Building_MinimalAPIsMoviesApp.Endpoints
             var actorDTO = mapper.Map<List<ActorDTO>>(actors);
             return TypedResults.Ok(actorDTO);
         }
-        
-        static async Task<Created<ActorDTO>> Create(
+
+        static async Task<Results<Created<ActorDTO>, ValidationProblem>> Create(
             [FromForm] CreateActorDTO createActorDTO,
             IActorsRepository repository,
             IOutputCacheStore outputCacheStore,
             IMapper mapper,
-            IFileStorage fileStorage
-            ) 
+            IFileStorage fileStorage,
+            IValidator<CreateActorDTO> validator
+            )
         {
+
+            var validationResult = await validator.ValidateAsync(createActorDTO);
+
+            if (!validationResult.IsValid)
+            {
+                return TypedResults.ValidationProblem(validationResult.ToDictionary());
+            }
+
+
             var actor = mapper.Map<Actor>(createActorDTO);
 
-            if (createActorDTO.Picture is not null) 
-            { 
-                var url =  await fileStorage.Store(_container, createActorDTO.Picture);
+            if (createActorDTO.Picture is not null)
+            {
+                var url = await fileStorage.Store(_container, createActorDTO.Picture);
                 actor.Picture = url;
             }
 
