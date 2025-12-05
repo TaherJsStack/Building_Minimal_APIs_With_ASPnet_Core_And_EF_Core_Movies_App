@@ -2,7 +2,6 @@
 using Building_MinimalAPIsMoviesApp.DTOs;
 using Building_MinimalAPIsMoviesApp.Entities;
 using Building_MinimalAPIsMoviesApp.Filters;
-using Building_MinimalAPIsMoviesApp.Migrations;
 using Building_MinimalAPIsMoviesApp.Repositories;
 using Building_MinimalAPIsMoviesApp.Services;
 using Microsoft.AspNetCore.Http.HttpResults;
