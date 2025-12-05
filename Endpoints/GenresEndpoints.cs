@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Building_MinimalAPIsMoviesApp.DTOs;
 using Building_MinimalAPIsMoviesApp.Entities;
+using Building_MinimalAPIsMoviesApp.Filters;
 using Building_MinimalAPIsMoviesApp.Repositories;
 using FluentValidation;
 using Microsoft.AspNetCore.Http.HttpResults;
@@ -14,7 +15,7 @@ namespace Building_MinimalAPIsMoviesApp.Endpoints
         {
             group.MapGet("/", GetGenres).CacheOutput(c => c.Expire(TimeSpan.FromSeconds(60)).Tag("genres-get"));
 
-            group.MapGet("/{id:int}", GetById);
+            group.MapGet("/{id:int}", GetById).AddEndpointFilter<TestFilter>();
 
             group.MapPost("/", Create);
 
