@@ -25,7 +25,7 @@ namespace Building_MinimalAPIsMoviesApp.Validations
                 .WithMessage("First Litter Is Uppercase Error Message")
                 .MustAsync(async (name, _) =>
                 {
-                    var exists = await genresRepository.Exists(id: 0, name);
+                    var exists = await genresRepository.Exists(id, name);
                     return !exists;
                 }).WithMessage(g => $"a genre with the {g.Name} already exists.")
                 ;
