@@ -61,11 +61,19 @@ var app = builder.Build();
 // Middleware Zone - START
 
 //if (builder.Environment.IsDevelopment()) {
-    app.UseSwagger();
-    app.UseSwaggerUI(c => {});
+app.UseSwagger();
+app.UseSwaggerUI(c => { });
 //}
 
-app.UseExceptionHandler();
+app.UseExceptionHandler(exceptionHandlerApp => exceptionHandlerApp.Run(async content =>
+{
+    await Results.BadRequest(new
+    {
+        type = "Error",
+        Message = "an unexpected exception has occurrd.",
+        status = 500
+    }).ExecuteAsync(content);
+}));
 app.UseStatusCodePages();
 
 app.UseStaticFiles();
@@ -75,6 +83,10 @@ app.UseCors();
 app.UseOutputCache();
 
 app.MapGet("/", () => "ConfigName");
+app.MapGet("/error", () =>
+{
+    throw new InvalidOperationException("Example Error Message");
+});
 
 app.MapGroup("/genres").MapGenres();
 app.MapGroup("/actors").MapActors();
