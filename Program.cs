@@ -57,6 +57,9 @@ builder.Services.AddValidatorsFromAssemblyContaining<Program>();
 
 builder.Services.AddProblemDetails();
 
+builder.Services.AddAuthentication().AddJwtBearer();
+builder.Services.AddAuthorization();
+
 // Services Zone - END
 
 var app = builder.Build();
@@ -96,6 +99,8 @@ app.UseStaticFiles();
 app.UseCors();
 
 app.UseOutputCache();
+
+app.UseAuthorization();
 
 app.MapGet("/", () => "ConfigName");
 app.MapGet("/error", () =>
